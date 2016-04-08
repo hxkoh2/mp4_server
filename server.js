@@ -7,7 +7,10 @@ var bodyParser = require('body-parser');
 var router = express.Router();
 
 //replace this with your Mongolab URL (should be digital ocean server?)
-mongoose.connect('mongodb://localhost/mp4db');
+//mongoose.connect('mongodb://localhost/mp4db');
+var db = mongoose.connection;
+db.once('open', function(){});
+mongoose.connect('mongodb://hanna:password@ds021000.mlab.com:21000/mp4db', function(err){if(err) console.log(err);});
 
 // Create our Express application
 var app = express();
@@ -131,10 +134,8 @@ userRoute.put(function(req, res) {
 				user.name = name;
 				user.email = email;
 				var pendingTasks = req.body.pendingTasks;
-				console.log(name);
-				console.log(pendingTasks);
 				if(!(pendingTasks === null))
-					user.pendingTasks = pendingTasks;
+					user.pendingTasks = req.body.pendingTasks;
 				user.save(function(err1){
 					if(err1)
 						res.status(404).json({message: "Error updating user", data: err1});

@@ -109,9 +109,9 @@ var userRoute = router.route('/users/:user_id');
 
 userRoute.get(function(req, res){
 	User.findById(req.params.user_id, function(err, user){
-		if(err)
+		if(err || !user)
 			res.status(404).json({message: "Error getting user", data: err});
-		else
+		else 
 			res.status(200).json({message: "Got user" + req.params.user_id, data: user});
 	});
 });
@@ -128,7 +128,7 @@ userRoute.put(function(req, res) {
 	}
 	else {
 		User.findById(req.params.user_id, function(err, user){
-			if(err)
+			if(err || !user)
 				res.status(404).json({message: "Error updating user", data: err});
 			else {
 				user.name = name;
@@ -149,7 +149,7 @@ userRoute.put(function(req, res) {
 
 userRoute.delete(function(req, res) {
 	User.findByIdAndRemove(req.params.user_id, function(err, user) {
-		if(err)
+		if(err || !user)
 			res.status(404).json({message: "Error deleting user", data: err});
 		else
 			res.status(200).json({message: "User deleted from the database!", data: user});
@@ -242,7 +242,7 @@ var taskRoute = router.route('/tasks/:task_id');
 
 taskRoute.get(function(req, res){
 	Task.findById(req.params.task_id, function(err, task){
-		if(err)
+		if(err || !task)
 			res.status(404).json({message: "Error getting task", data: err});
 		else
 			res.status(200).json({message: "Got task" + req.params.task_id, data: task});
@@ -260,7 +260,7 @@ taskRoute.put(function(req, res) {
 	}
 	else {
 		Task.findById(req.params.task_id, function(err, task){
-			if(err)
+			if(err || !task)
 				res.status(404).json({message: "Error updating task", data: err});
 			else {
 				task.name = name;
@@ -305,7 +305,7 @@ taskRoute.put(function(req, res) {
 
 taskRoute.delete(function(req, res) {
 	Task.findByIdAndRemove(req.params.task_id, function(err, task) {
-		if(err)
+		if(err || !task)
 			res.status(404).json({message: "Error deleting task", data: err});
 		else
 			res.status(200).json({message: "Task deleted from the database!", data: task});

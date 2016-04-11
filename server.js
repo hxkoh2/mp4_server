@@ -48,8 +48,8 @@ usersRoute.get(function(req, res) {
 	var where = eval("(" + req.query.where + ")");
 	var sort = eval("(" + req.query.sort + ")");
 	var select = eval("(" + req.query.select + ")");
-	var skip = req.query.skip;
-	var limit = req.query.limit;
+	var skip = eval(req.query.skip);
+	var limit = eval(req.query.limit);
 	var count = req.query.count;
 
 	var query = User.find(where)
@@ -58,8 +58,8 @@ usersRoute.get(function(req, res) {
 	.skip(skip)
 	.limit(limit);
 
-	if(count == 1)
-		query.count(count);
+	if(count==true || count == "true")
+		query.count();
 
 	query.exec(function(err, users){
 	  	if(err)
@@ -162,9 +162,12 @@ tasksRoute.get(function(req, res) {
 	var where = eval("(" + req.query.where + ")");
 	var sort = eval("(" + req.query.sort + ")");
 	var select = eval("(" + req.query.select + ")");
-	var skip = req.query.skip;
-	var limit = req.query.limit;
+	var skip = eval(req.query.skip);
+	var limit = eval(req.query.limit);
 	var count = req.query.count;
+	if(!limit){
+		limit = 100
+	}
 
 	var query = Task.find(where)
 	.sort(sort)
@@ -172,8 +175,8 @@ tasksRoute.get(function(req, res) {
 	.skip(skip)
 	.limit(limit);
 
-	if(count == 1)
-		query.count(count);
+	if(count == true || count == "true")
+		query.count();
 
 	query.exec(function(err, tasks){
 	  	if(err)
